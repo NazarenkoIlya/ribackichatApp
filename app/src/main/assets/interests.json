@@ -1,0 +1,106 @@
+{
+  "groups": [
+    {
+      "id": 1,
+      "name": "🍳 Кулинария",
+      "name_en": "Cooking",
+      "items": [
+        { "id": 101, "name": "Готовка", "name_en": "Cooking" },
+        { "id": 102, "name": "Выпечка", "name_en": "Baking" },
+        { "id": 103, "name": "Здоровое питание", "name_en": "Healthy eating" },
+        { "id": 104, "name": "Вегетарианство", "name_en": "Vegetarianism" },
+        { "id": 105, "name": "Кофе", "name_en": "Coffee" },
+        { "id": 106, "name": "Чайная церемония", "name_en": "Tea ceremony" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "🏠 Дом и уют",
+      "name_en": "Home & Coziness",
+      "items": [
+        { "id": 201, "name": "Ремонт", "name_en": "Renovation" },
+        { "id": 202, "name": "Садоводство", "name_en": "Gardening" },
+        { "id": 203, "name": "Домашние растения", "name_en": "Houseplants" },
+        { "id": 204, "name": "Уборка лайфхаки", "name_en": "Cleaning hacks" },
+        { "id": 205, "name": "Декор", "name_en": "Decor" },
+        { "id": 206, "name": "Организация пространства", "name_en": "Organization" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "📺 Развлечения",
+      "name_en": "Entertainment",
+      "items": [
+        { "id": 301, "name": "Кино", "name_en": "Movies" },
+        { "id": 302, "name": "Сериалы", "name_en": "TV series" },
+        { "id": 303, "name": "Аниме", "name_en": "Anime" },
+        { "id": 304, "name": "Настольные игры", "name_en": "Board games" },
+        { "id": 305, "name": "Видеоигры", "name_en": "Video games" },
+        { "id": 306, "name": "Подкасты", "name_en": "Podcasts" },
+        { "id": 307, "name": "Комиксы", "name_en": "Comics" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "🏋️‍♂️ Здоровье и спорт",
+      "name_en": "Health & Sports",
+      "items": [
+        { "id": 401, "name": "Фитнес", "name_en": "Fitness" },
+        { "id": 402, "name": "Йога", "name_en": "Yoga" },
+        { "id": 403, "name": "Бег", "name_en": "Running" },
+        { "id": 404, "name": "Плавание", "name_en": "Swimming" },
+        { "id": 405, "name": "Медитация", "name_en": "Meditation" },
+        { "id": 406, "name": "Правильный сон", "name_en": "Healthy sleep" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "📚 Саморазвитие",
+      "name_en": "Self-development",
+      "items": [
+        { "id": 501, "name": "Книги", "name_en": "Books" },
+        { "id": 502, "name": "Психология", "name_en": "Psychology" },
+        { "id": 503, "name": "Изучение языков", "name_en": "Language learning" },
+        { "id": 504, "name": "Онлайн-курсы", "name_en": "Online courses" },
+        { "id": 505, "name": "Тайм-менеджмент", "name_en": "Time management" }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "🚲 Хобби на улице",
+      "name_en": "Outdoor hobbies",
+      "items": [
+        { "id": 601, "name": "Велоспорт", "name_en": "Cycling" },
+        { "id": 602, "name": "Пешие прогулки", "name_en": "Hiking" },
+        { "id": 603, "name": "Фотография", "name_en": "Photography" },
+        { "id": 604, "name": "Пикник", "name_en": "Picnic" },
+        { "id": 605, "name": "Рыбалка", "name_en": "Fishing" },
+        { "id": 606, "name": "Ролики", "name_en": "Roller skating" }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "👗 Мода и красота",
+      "name_en": "Fashion & Beauty",
+      "items": [
+        { "id": 701, "name": "Уход за кожей", "name_en": "Skincare" },
+        { "id": 702, "name": "Макияж", "name_en": "Makeup" },
+        { "id": 703, "name": "Стиль", "name_en": "Style" },
+        { "id": 704, "name": "Косметика", "name_en": "Cosmetics" },
+        { "id": 705, "name": "Парфюмерия", "name_en": "Perfumery" }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "🐾 Животные",
+      "name_en": "Animals",
+      "items": [
+        { "id": 801, "name": "Кошки", "name_en": "Cats" },
+        { "id": 802, "name": "Собаки", "name_en": "Dogs" },
+        { "id": 803, "name": "Аквариумистика", "name_en": "Aquarium" },
+        { "id": 804, "name": "Птицы", "name_en": "Birds" },
+        { "id": 805, "name": "Уход за питомцами", "name_en": "Pet care" }
+      ]
+    }
+  ]
+}

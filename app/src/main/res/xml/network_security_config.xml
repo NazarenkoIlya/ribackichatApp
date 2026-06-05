@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Разрешаем HTTP для эмулятора -->
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <!-- Также разрешаем localhost на всякий случай -->
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
+</network-security-config>
