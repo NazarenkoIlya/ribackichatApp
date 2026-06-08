@@ -119,7 +119,7 @@ fun ChatDetailScreen(
 
     DisposableEffect(Unit) {
         onDispose {
-            if (!chatDetailState.sendMessage.isBlank()) {
+            if (!chatDetailState.sendMessage.isBlank() && !chatDetailState.isEditing) {
                 viewModel.onEvent(ChatDetailEvent.SaveMessageDraft)
                 Toast.makeText(context, "Draft Saved", Toast.LENGTH_SHORT).show()
             }

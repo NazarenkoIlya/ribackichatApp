@@ -44,6 +44,7 @@ import com.example.rybackiapp.presentation.components.IconButtonWithTextComponen
 import com.example.rybackiapp.presentation.components.ImageComponent
 import com.example.rybackiapp.presentation.components.YourselfCard
 import com.example.rybackiapp.presentation.navigation.Screen
+import com.example.rybackiapp.presentation.screens.userprofile.state.UserProfileEvent
 import com.example.rybackiapp.presentation.screens.userprofile.state.UserProfileState
 import com.example.rybackiapp.presentation.screens.userprofile.state.UserProfileUiState
 
@@ -60,7 +61,7 @@ fun UserProfileScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadProfile(userId)
+        viewModel.loadProfile(userId,chatId)
     }
 
     Scaffold(
@@ -82,14 +83,6 @@ fun UserProfileScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
-//                actions = {
-//                    IconButton(onClick = { /* Действие 1 */ }) {
-//                        Icon(Icons.Default.Edit, contentDescription = "Редактировать")
-//                    }
-//                    IconButton(onClick = { /* Действие 2 */ }) {
-//                        Icon(Icons.Default.MoreVert, contentDescription = "Еще")
-//                    }
-//                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer
@@ -110,6 +103,7 @@ fun UserProfileScreen(
                     chatId = chatId,
                     onNavigateTo = onNavigateTo,
                     modifier = Modifier.padding(innerPadding),
+                    onEvent = viewModel::onEvent
                 )
             }
         }
@@ -120,6 +114,7 @@ fun UserProfileScreen(
 fun UserProfileView(
     state: UserProfileUiState = UserProfileUiState(),
     onNavigateTo: (String) -> Unit = {},
+    onEvent: (UserProfileEvent) -> Unit = {},
     chatId: String = "",
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
@@ -173,9 +168,16 @@ fun UserProfileView(
                         )
                         Spacer(modifier = Modifier.padding(2.dp))
                         IconButtonWithTextComponent(
-                            icon = R.drawable.ic_bell,
+                            icon = if (state.isMute) R.drawable.ic_bell_off else R.drawable.ic_bell,
                             text = "Sound",
-                            modifier = Modifier.weight(0.45f)
+                            modifier = Modifier.weight(0.45f),
+                            onClick = {
+                                if (state.isMute) {
+                                    onEvent(UserProfileEvent.Unmute(chatId))
+                                } else {
+                                    onEvent(UserProfileEvent.Mute(chatId))
+                                }
+                            }
                         )
                     }
                     YourselfCard(

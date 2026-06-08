@@ -19,5 +19,11 @@ data class Profile(
 
 data class UserProfileUiState(
     val state: UserProfileState = UserProfileState.Success,
-    val profile: Profile = Profile()
+    val profile: Profile = Profile(),
+    val isMute: Boolean = false
 )
+
+sealed class UserProfileEvent{
+    data class Mute(val chatId: String): UserProfileEvent()
+    data class Unmute(val chatId: String): UserProfileEvent()
+}

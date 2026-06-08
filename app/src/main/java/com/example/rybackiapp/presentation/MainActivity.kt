@@ -46,16 +46,21 @@ fun MainContent(
 
     val viewModel: AppStartViewModel = hiltViewModel()
     val startDestination by viewModel.startDestination.collectAsState()
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        AppNavigation(
-            navHostController = rememberNavController(),
-            startDestination = startDestination,
+    val theme by viewModel.theme.collectAsState()
+    RybackiAppTheme(theme = theme){
+        Box(
             modifier = modifier
-        )
+                .fillMaxSize()
+        ) {
+
+            AppNavigation(
+                navHostController = rememberNavController(),
+                startDestination = startDestination,
+                modifier = modifier
+            )
+        }
     }
+
 
 
 //    val database = Firebase.database

@@ -11,4 +11,11 @@ interface SettingsRepository {
     fun observeNotificationEnable(): Flow<Boolean>
     fun observeTheme(): Flow<String>
     fun observeFontSizeMessage(): Flow<Int>
+
+
+    fun observeMutedChat(): Flow<Set<String>>
+    fun isChatMuted(chatId: String): Flow<Boolean>
+
+    suspend fun muteChat(chatId: String)
+    suspend fun unmuteChat(chatId: String)
 }

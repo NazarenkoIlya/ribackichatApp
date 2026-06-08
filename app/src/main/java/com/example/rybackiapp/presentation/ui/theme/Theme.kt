@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.example.rybackiapp.presentation.screens.settings.state.Theme
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -34,20 +35,28 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun RybackiAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    //darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
+    theme: Theme = Theme.SYSTEM,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    val darkTheme = isSystemInDarkTheme()
+    val colorScheme = when (theme) {
+        Theme.DARK -> DarkColorScheme
+        Theme.LIGHT -> LightColorScheme
+        else -> if (darkTheme) DarkColorScheme else LightColorScheme
     }
+//    val colorScheme = when {
+////        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+////            val context = LocalContext.current
+////            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+////        }
+//
+//        darkTheme -> DarkColorScheme
+//        else -> LightColorScheme
+//    }
 
     MaterialTheme(
         colorScheme = colorScheme,

@@ -1,6 +1,7 @@
 package com.example.rybackiapp.data.repository
 
 
+import android.util.Log
 import com.example.rybackiapp.data.storage.SettingStorage
 import com.example.rybackiapp.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +23,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override fun observeNotificationEnable(): Flow<Boolean> {
-        return  settingStorage.observeNotificationEnable()
+        return settingStorage.observeNotificationEnable()
     }
 
     override fun observeTheme(): Flow<String> {
@@ -31,5 +32,22 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override fun observeFontSizeMessage(): Flow<Int> {
         return settingStorage.observeFontSizeMessage()
+    }
+
+    override fun observeMutedChat(): Flow<Set<String>> {
+        return settingStorage.observeMutedChat()
+    }
+
+    override fun isChatMuted(chatId: String): Flow<Boolean> {
+
+        return settingStorage.isChatMuted(chatId)
+    }
+
+    override suspend fun muteChat(chatId: String) {
+        settingStorage.muteChat(chatId)
+    }
+
+    override suspend fun unmuteChat(chatId: String) {
+        settingStorage.unmuteChat(chatId)
     }
 }
