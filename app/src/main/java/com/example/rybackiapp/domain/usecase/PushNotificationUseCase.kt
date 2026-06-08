@@ -10,20 +10,26 @@ class PushNotificationUseCase @Inject constructor(
     private val pushNotificationRepository: PushNotificationRepository,
     private val notificationRepository: NotificationRepository
 ) {
-    suspend operator fun invoke(uid: String, title: String, text: String): Result<Unit> {
+    suspend operator fun invoke(
+        uid: String,
+        title: String,
+        text: String,
+        chatId: String
+    ): Result<Unit> {
 
         return try {
             val token = notificationRepository.getReceiverFcmToken(uid)
             pushNotificationRepository.sendPush(
                 receiverFcmToken = token,
                 title = title,
-                text = text
+                text = text,
+                chatId = chatId
             )
             Result.success(Unit)
         } catch (e: HttpException) {
             val message = when (e.code()) {
-                500 -> "Ошибка сервера" //resourcesManager.getString(R.string.server_error, e.code().toString())
-                else -> "Неизвестная ошибка"// resourcesManager.getString(R.string.unknown_error)
+                500 -> "Ошибка сервера"
+                else -> "Неизвестная ошибка"
             }
             Result.failure(Exception(message))
         } catch (e: Exception) {

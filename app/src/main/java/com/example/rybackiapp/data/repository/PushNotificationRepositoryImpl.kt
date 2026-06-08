@@ -12,14 +12,16 @@ class PushNotificationRepositoryImpl @Inject constructor(
     override suspend fun sendPush(
         receiverFcmToken: String,
         title: String,
-        text: String
+        text: String,
+        chatId: String
     ) {
 
         api.sendNotification(
             NotificationRequest(
                 token = receiverFcmToken,
                 title = title,
-                body = text
+                body = text,
+                chatId = chatId
             )
         )
     }

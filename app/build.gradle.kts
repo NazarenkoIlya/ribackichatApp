@@ -35,9 +35,11 @@ android {
 
         val supabaseUrl = localProperties.getProperty("SUPABASE_URL") ?: "\"\""
         val supabaseAnonKey = localProperties.getProperty("SUPABASE_ANON_KEY") ?: "\"\""
+        val url = localProperties.getProperty("URL") ?: "\"\""
 
         buildConfigField("String", "SUPABASE_URL", supabaseUrl)
         buildConfigField("String", "SUPABASE_ANON_KEY", supabaseAnonKey)
+        buildConfigField("String", "URL", url)
     }
 
 

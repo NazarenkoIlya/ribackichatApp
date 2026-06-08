@@ -1,5 +1,6 @@
 package com.example.rybackiapp.di
 
+import com.example.rybackiapp.BuildConfig
 import com.example.rybackiapp.data.repository.ProfileRepositoryImpl
 import com.example.rybackiapp.data.service.NotificationApi
 import com.example.rybackiapp.domain.repository.ProfileRepository
@@ -23,7 +24,7 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:3000/")
+        .baseUrl(BuildConfig.URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

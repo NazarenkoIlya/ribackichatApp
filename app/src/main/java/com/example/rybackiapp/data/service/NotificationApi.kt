@@ -1,6 +1,7 @@
 package com.example.rybackiapp.data.service
 
 
+
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -13,5 +14,6 @@ interface NotificationApi {
 data class NotificationRequest(
     val token: String,
     val title: String,
-    val body: String
+    val body: String,
+    val chatId: String
 )

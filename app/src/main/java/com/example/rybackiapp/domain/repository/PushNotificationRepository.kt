@@ -4,6 +4,7 @@ interface PushNotificationRepository {
     suspend fun sendPush(
         receiverFcmToken: String,
         title: String,
-        text: String
+        text: String,
+        chatId: String
     )
 }

@@ -7,6 +7,8 @@ import android.app.NotificationManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.rybackiapp.domain.usecase.IsMutedChatUseCase
+import com.example.rybackiapp.domain.usecase.ObserveNotificationUseCase
 import com.example.rybackiapp.domain.usecase.SaveFcmTokenUseCase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -15,6 +17,8 @@ import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
@@ -25,6 +29,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var saveFcmTokenUseCase: SaveFcmTokenUseCase
+
+    @Inject
+    lateinit var observeNotificationUseCase: ObserveNotificationUseCase
+
+    @Inject
+    lateinit var isMutedChatUseCase: IsMutedChatUseCase
 
 
     override fun onCreate() {
@@ -60,9 +70,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val title = message.notification?.title ?: "New message"
         val body = message.notification?.body ?: ""
 
-        Log.d("IIIII", "onMessageReceived: ${title} --- $body")
+        val chatId = message.data["chatId"]
 
-        showNotification(title, body)
+        Log.d("IIIII", "onMessageReceived: $title --- $body --- chatId: $chatId")
+
+        combine(
+            observeNotificationUseCase(),
+            isMutedChatUseCase(chatId ?: "")
+        ) { isNotificationsEnabled, isMuted ->
+            if (isNotificationsEnabled && !isMuted) {
+                showNotification(title, body)
+            }
+        }.launchIn(CoroutineScope(Dispatchers.IO))
     }
 
     private fun showNotification(title: String, body: String) {
@@ -94,8 +113,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setContentTitle(title)
             .setContentText(body)
             .setSmallIcon(R.drawable.ic_notification_overlay)
-//            .setPriority(NotificationCompat.PRIORITY_HIGH) // Добавь priority
-//            .setDefaults(NotificationCompat.DEFAULT_ALL) // Звук, вибрация, свет
+            //.setPriority(NotificationCompat.PRIORITY_HIGH)
+            //.setDefaults(NotificationCompat.DEFAULT_ALL)
             .setAutoCancel(true)
             .build()
 

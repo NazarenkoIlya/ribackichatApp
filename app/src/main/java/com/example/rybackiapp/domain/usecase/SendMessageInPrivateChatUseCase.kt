@@ -11,6 +11,7 @@ import javax.inject.Inject
 class SendMessageInPrivateChatUseCase @Inject constructor(
     private val chatRepository: ChatRepository,
     private val userIdCacheRepository: UserIdCacheRepository,
+    private val pushNotificationUseCase: PushNotificationUseCase
 ) {
     suspend operator fun invoke(
         chatId: String,
@@ -38,6 +39,15 @@ class SendMessageInPrivateChatUseCase @Inject constructor(
             )
 
             chatRepository.sendMessage(chatId, message)
+
+
+            Log.d("YYYYYYYYY", "invoke: ${chatId.split("_").find { it != senderId } ?: ""}")
+            pushNotificationUseCase.invoke(
+                uid = chatId.split("_").find { it != senderId } ?: "",
+                title = senderId,
+                text = text,
+                chatId = chatId
+            )
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
