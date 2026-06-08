@@ -193,7 +193,10 @@ fun AccountView(
                             IconButtonWithTextComponent(
                                 icon = R.drawable.ic_settings1,
                                 text = "Settings",
-                                modifier = Modifier.weight(0.33f)
+                                modifier = Modifier.weight(0.33f),
+                                onClick = {
+                                    navigateTo(Screen.Settings)
+                                }
                             )
                             Spacer(modifier = Modifier.padding(2.dp))
                             IconButtonWithTextComponent(
@@ -211,11 +214,7 @@ fun AccountView(
                             nameUser = profile.tagName ?: "",
                         )
                     }
-
-
-                    //   GalleryPicker()
                 }
-
             }
 
             AccountState.SignOut -> {

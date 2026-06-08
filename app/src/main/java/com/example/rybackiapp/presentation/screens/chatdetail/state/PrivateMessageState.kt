@@ -53,6 +53,11 @@ data class PrivateChatDetailsState(
     val messagePreview: String = "",
     val isEditing: Boolean = false,
     val sendMessage: String = "",
+    val textSize: TextSize = TextSize()
+)
+
+data class TextSize(
+    val messageTextSize: Int = 12
 )
 
 

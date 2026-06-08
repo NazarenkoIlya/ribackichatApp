@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.example.rybackiapp.di.FilterDataStore
 import com.example.rybackiapp.domain.model.Filter
 import com.example.rybackiapp.domain.repository.FilterRepository
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FilterRepositoryImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    @FilterDataStore private val dataStore: DataStore<Preferences>
 ) : FilterRepository {
     override fun getFilter(): Flow<Filter> = dataStore.data.map { prefs ->
         Filter(

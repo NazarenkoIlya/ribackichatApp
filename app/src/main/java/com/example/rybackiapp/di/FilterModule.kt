@@ -16,7 +16,7 @@ object FilterModule {
 
     @Provides
     fun provideFilterRepository(
-        dataStore: DataStore<Preferences>
+        @FilterDataStore dataStore: DataStore<Preferences>
     ): FilterRepository {
         return FilterRepositoryImpl(dataStore)
     }

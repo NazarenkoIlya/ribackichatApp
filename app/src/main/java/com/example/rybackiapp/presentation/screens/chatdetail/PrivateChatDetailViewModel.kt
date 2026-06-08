@@ -12,6 +12,7 @@ import com.example.rybackiapp.domain.usecase.DeleteMessageUseCase
 import com.example.rybackiapp.domain.usecase.EditMessageUseCase
 import com.example.rybackiapp.domain.usecase.GetMessageDraftUseCase
 import com.example.rybackiapp.domain.usecase.ObserveChatDetailUseCase
+import com.example.rybackiapp.domain.usecase.ObserveFontSizeMassageUseCase
 import com.example.rybackiapp.domain.usecase.ObserveUserChatPreview
 import com.example.rybackiapp.domain.usecase.ObserveUserIdUseCase
 import com.example.rybackiapp.domain.usecase.ObserveUserProfilePreview
@@ -19,11 +20,13 @@ import com.example.rybackiapp.domain.usecase.PushNotificationUseCase
 import com.example.rybackiapp.domain.usecase.ResetUnreadCountUseCase
 import com.example.rybackiapp.domain.usecase.SaveMessageDraftUseCase
 import com.example.rybackiapp.domain.usecase.SendMessageInPrivateChatUseCase
+import com.example.rybackiapp.domain.usecase.SetFontSizeMassageUseCase
 import com.example.rybackiapp.presentation.screens.chatdetail.state.ChatDetailEvent
 import com.example.rybackiapp.presentation.screens.chatdetail.state.ChatPreview
 import com.example.rybackiapp.presentation.screens.chatdetail.state.MessageUI
 import com.example.rybackiapp.presentation.screens.chatdetail.state.MessageWithUserName
 import com.example.rybackiapp.presentation.screens.chatdetail.state.PrivateChatDetailsState
+import com.example.rybackiapp.presentation.screens.chatdetail.state.TextSize
 import com.example.rybackiapp.presentation.screens.chatdetail.state.UserPreviewUI
 import com.example.rybackiapp.utils.core.MessageSender
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -58,6 +61,7 @@ class PrivateChatDetailViewModel @Inject constructor(
     private val deleteMessageUseCase: DeleteMessageUseCase,
     private val messageSender: MessageSender,
     private val editMessageUseCase: EditMessageUseCase,
+    private val observeFontSizeMassageUseCase: ObserveFontSizeMassageUseCase,
     private val pushNotificationUseCase: PushNotificationUseCase
 ) : ViewModel() {
 
@@ -175,11 +179,12 @@ class PrivateChatDetailViewModel @Inject constructor(
 
             combine(
                 observeChatDetailUseCase.invoke(chatId),
-                observeUserIdUseCase.invoke(),
+                observeUserIdUseCase.invoke()
             ) { messages, userId ->
                 messages to userId
             }.collect { (messages, userId) ->
 
+                val textSize = observeFontSizeMassageUseCase().first()
                 val preview =
                     observeUserChatPreview.invoke(
                         chatId.split("_")
@@ -195,7 +200,6 @@ class PrivateChatDetailViewModel @Inject constructor(
                         chatId = chatId,
                         preview = preview.toMap(),
                         messages = messages.map {
-
                             val userPreview =
                                 observeUserProfilePreview.invoke(it.senderId).first().toMap()
                             val message = it.toMap(userId)
@@ -203,7 +207,8 @@ class PrivateChatDetailViewModel @Inject constructor(
                                 userPreview = userPreview,
                                 messageUI = message
                             )
-                        }
+                        },
+                        textSize = TextSize(textSize)
                     )
                 }
             }

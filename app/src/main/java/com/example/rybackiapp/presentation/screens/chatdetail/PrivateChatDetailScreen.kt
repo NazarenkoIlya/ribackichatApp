@@ -157,7 +157,7 @@ fun ChatDetailScreen(
                     modifier = Modifier.fillMaxSize(),
                     painter = background,
                     contentDescription = "background ",
-                            contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop
                 )
                 ChatDetailScreenView(
                     chatDetailState = chatDetailState,
@@ -216,7 +216,8 @@ fun ChatDetailScreenView(
                         editMessage = {
                             onEvent(ChatDetailEvent.MessageEditing(messageUI.messageId, true))
                         },
-                        isEdit = messageUI.isEdit
+                        isEdit = messageUI.isEdit,
+                        messageTextSize = chatDetailState.textSize.messageTextSize
                     )
                 }
             }

@@ -48,6 +48,7 @@ import com.example.rybackiapp.R
 fun MessageCard(
     isOwn: Boolean = true,
     message: String = "No massage!!",
+    messageTextSize: Int = 12,
     isEdit: Boolean? = null,
     userName: String = "Name",
     date: String = "2000-07-08",
@@ -156,7 +157,7 @@ fun MessageCard(
                     SelectionContainer {
                         Text(
                             message,
-                            fontSize = 12.sp,
+                            fontSize = messageTextSize.sp,
                             maxLines = Int.MAX_VALUE,
                             overflow = TextOverflow.Visible
                         )

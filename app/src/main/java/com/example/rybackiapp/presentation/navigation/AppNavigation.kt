@@ -17,38 +17,26 @@ import com.example.rybackiapp.presentation.screens.account.old_version.AccountSc
 import com.example.rybackiapp.presentation.screens.chatdetail.ChatDetailScreen
 import com.example.rybackiapp.presentation.screens.chatlist.old_version.ChatListScreen
 import com.example.rybackiapp.presentation.screens.editprofile.EditProfileScreen
+import com.example.rybackiapp.presentation.screens.settings.SettingsScreen
 import com.example.rybackiapp.presentation.screens.signin.SignInScreen
 import com.example.rybackiapp.presentation.screens.signup.SignUpScreen
 import com.example.rybackiapp.presentation.screens.userprofile.UserProfileScreen
 import com.example.rybackiapp.presentation.screens.users.UserProfilesScreen
 
 
-sealed class Screen(val route: String, val icon: ImageVector? = null, val label: String? = null) {
+sealed class Screen(val route: String) {
 
     object SignIn : Screen("signin")
     object SignUp : Screen("signup")
 
 
-    object ChatList : Screen(
-        route = "chatlist",
-        //Icons
-        //icon = Icon.Default.MailOutline,
-        label = "Чаты"
-    )
+    object ChatList : Screen(route = "chatlist")
+    object UserProfileList : Screen(route = "users")
+    object Account : Screen(route = "account")
 
-    object UserProfileList : Screen(
-        route = "users",
-        //icon = Icons.Default.Face,
-        label = "Пользователи"
-    )
-
-    object Account : Screen(
-        route = "account",
-        //icon = Icons.Default.Person,
-        label = "Профиль"
-    )
 
     object EditProfile : Screen("edit")
+    object Settings : Screen("settings")
 
     data class UserProfile(val userId: String, val chatId: String) :
         Screen("user_profile/{userId}/{chatId}") {
@@ -177,6 +165,14 @@ fun AppNavigation(
 
                 composable(Screen.EditProfile.route) {
                     EditProfileScreen(
+                        onBackClick = {
+                            navHostController.popBackStack()
+                        }
+                    )
+                }
+
+                composable(Screen.Settings.route) {
+                    SettingsScreen(
                         onBackClick = {
                             navHostController.popBackStack()
                         }

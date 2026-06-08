@@ -41,14 +41,6 @@ fun MainAppScreen(
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-
-//    // Список экранов для нижнего меню
-//    val bottomNavScreens = listOf(
-//        Screen.ChatList,
-//        Screen.UserProfileList,
-//        Screen.Account
-//    )
-
     Scaffold(
         bottomBar = {
             // Показываем нижнее меню только на корневых экранах
