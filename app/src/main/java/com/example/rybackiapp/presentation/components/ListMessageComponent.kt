@@ -107,7 +107,7 @@ fun ListMessageComponentView(
                                     }
                                 }
                             )
-                            if (index != 0) {
+                            if (items.size > 1) {
                                 TooltipBoxComponent(
                                     text = "Delete item",
                                     content = {
