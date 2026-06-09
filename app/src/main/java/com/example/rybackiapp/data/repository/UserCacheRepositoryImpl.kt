@@ -1,5 +1,6 @@
 package com.example.rybackiapp.data.repository
 
+import com.example.rybackiapp.di.GlobalReference
 import com.example.rybackiapp.domain.repository.ProfileRepository
 import com.example.rybackiapp.domain.repository.UserIdCacheRepository
 import kotlinx.coroutines.CoroutineScope

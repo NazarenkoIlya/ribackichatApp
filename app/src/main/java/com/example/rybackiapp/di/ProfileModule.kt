@@ -21,9 +21,10 @@ object ProfileModule {
 
     @Provides
     @Singleton
+
     fun provideProfileRepository(
         firebaseAuth: FirebaseAuth,
-        database: DatabaseReference
+        @GlobalReference     database: DatabaseReference
     ): ProfileRepository {
         return ProfileRepositoryImpl(firebaseAuth, database)
     }
@@ -32,20 +33,20 @@ object ProfileModule {
     @Provides
     @Singleton
     fun provideUserIdCacheRepository(
-        repository: ProfileRepository
+          repository: ProfileRepository
     ): UserIdCacheRepository {
         return UserIdCacheRepositoryImpl(repository)
     }
 
     @Provides
     fun provideCreateUserProfileUseCase(
-        repository: ProfileRepository
+          repository: ProfileRepository
     ): CreateUserProfileUseCase {
         return CreateUserProfileUseCase(repository)
     }
 
     fun provideEditProfileUseCase(
-        repository: ProfileRepository
+            repository: ProfileRepository
     ): EditProfileUseCase {
         return EditProfileUseCase(repository)
     }

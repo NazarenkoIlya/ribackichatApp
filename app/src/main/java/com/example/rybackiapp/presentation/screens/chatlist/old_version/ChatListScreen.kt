@@ -128,6 +128,7 @@ fun ChatListView(
                         ChatCard(
                             chatId = chatUi.chatUI.chatId,
                             isOwn = chatUi.chatUI.isOwn,
+                            isOnline = chatUi.chatPreview.isOnline,
                             lastMessage = chatUi.chatUI.lastMessage,
                             unreadMessages = chatUi.chatUI.unreadMessage,
                             userName = chatUi.chatPreview.name,

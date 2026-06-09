@@ -139,6 +139,7 @@ fun AccountView(
                     ImageComponent(
                         state.accountProfile.mainPhotoUrl,
                         R.drawable.ic_user0,
+                        isOnline = state.isOnline
                     )
 
                     Column(

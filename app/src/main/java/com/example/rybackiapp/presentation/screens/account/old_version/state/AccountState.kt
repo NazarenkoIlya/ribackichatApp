@@ -26,7 +26,8 @@ data class AccountProfile(
 
 data class AccountUIState(
     val accountState: AccountState = AccountState.Success,
-    val accountProfile: AccountProfile = AccountProfile()
+    val accountProfile: AccountProfile = AccountProfile(),
+    val isOnline: Boolean = false
 )
 
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +32,7 @@ import com.example.rybackiapp.R
 fun ImageComponent(
     imageUrl: String? = null,
     defaultImage: Int = R.drawable.ic_user0,
-
+    isOnline: Boolean = false,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
 
@@ -41,19 +42,31 @@ fun ImageComponent(
         placeholder = painterResource(id = defaultImage), // Пока загружается
         fallback = painterResource(id = defaultImage) // Если ничего не работает
     )
+    Box {
+        Image(
+            painter = painter,
+            contentDescription = "Выбранное изображение",
+            modifier = modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .size(300.dp)
+                .background(Color.Blue, shape = RoundedCornerShape(18.dp))
+                .clip(RoundedCornerShape(18.dp)),
+            contentScale = ContentScale.Crop
 
-    Image(
-        painter = painter,
-        contentDescription = "Выбранное изображение",
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .size(300.dp)
-            .background(Color.Blue, shape = RoundedCornerShape(18.dp))
-            .clip(RoundedCornerShape(18.dp)),
-        contentScale = ContentScale.Crop
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+                .size(52.dp)  // Размер кружка
+                .background(
+                    color = if (isOnline) Color.Green else Color.Red,
+                    shape = CircleShape
+                )
+        )
+    }
 
-    )
 }
 
 @Composable

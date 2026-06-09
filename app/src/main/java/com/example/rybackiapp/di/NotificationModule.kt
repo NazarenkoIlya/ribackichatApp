@@ -23,8 +23,9 @@ object NotificationModule {
 
     @Provides
     @Singleton
+
     fun provideNotificationRepository(
-        database: DatabaseReference
+        @GlobalReference database: DatabaseReference
     ): NotificationRepository {
         return NotificationRepositoryImpl(
             database = database

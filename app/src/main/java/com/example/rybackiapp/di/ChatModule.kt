@@ -18,9 +18,10 @@ object ChatModule {
 
     @Provides
     @Singleton
+
     fun provideChatRepository(
         firebaseAuth: FirebaseAuth,
-        database: DatabaseReference
+        @GlobalReference database: DatabaseReference
     ): ChatRepository {
         return ChatRepositoryImpl(
             auth = firebaseAuth,

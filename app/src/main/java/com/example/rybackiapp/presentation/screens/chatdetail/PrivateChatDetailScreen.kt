@@ -140,7 +140,9 @@ fun ChatDetailScreen(
                     }
                 },
                 title = {
-                    PrivateChatPreviewComponent(chatDetailState.preview)
+                    PrivateChatPreviewComponent(
+                        chatDetailState.preview,
+                        )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,

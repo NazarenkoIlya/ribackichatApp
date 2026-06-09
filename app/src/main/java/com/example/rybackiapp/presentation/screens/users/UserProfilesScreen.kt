@@ -241,6 +241,7 @@ fun UserProfilesView(
                             UserCard(
                                 userid = profile.id,
                                 chatId = profile.chatId,
+                                isOnline = profile.isOnline,
                                 userName = profile.name ?: "",
                                 userYear = profile.year ?: "",
                                 onNavigateToUserProfile = onNavigateToUserProfile,

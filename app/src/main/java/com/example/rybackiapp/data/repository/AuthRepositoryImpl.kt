@@ -3,6 +3,7 @@ package com.example.rybackiapp.data.repository
 
 import android.util.Log
 import androidx.room.Database
+import com.example.rybackiapp.di.GlobalReference
 import com.example.rybackiapp.domain.model.AuthResult
 import com.example.rybackiapp.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +18,7 @@ import kotlin.coroutines.resumeWithException
 class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseMessaging: FirebaseMessaging,
-    private val database: DatabaseReference
+    @GlobalReference private val database: DatabaseReference
 ) : AuthRepository {
     override suspend fun signInEmail(
         email: String,

@@ -2,6 +2,7 @@ package com.example.rybackiapp.data.repository
 
 
 import android.util.Log
+import com.example.rybackiapp.di.GlobalReference
 import com.example.rybackiapp.domain.model.Filter
 import com.example.rybackiapp.domain.model.PrivateUserChatPreview
 import com.example.rybackiapp.domain.model.UserPreview
@@ -17,7 +18,7 @@ import javax.inject.Inject
 import kotlin.String
 
 class UsersProfileRepositoryImpl @Inject constructor(
-    private val databaseRef: DatabaseReference
+    @GlobalReference private val databaseRef: DatabaseReference
 ) : UsersProfileRepository {
     override suspend fun getUsersProfileList(): Result<UserProfileList> {
         return try {
@@ -90,7 +91,6 @@ class UsersProfileRepositoryImpl @Inject constructor(
                 val year = childSnapshot.child(YEAR).getValue(String::class.java)
                 val photoUrl = childSnapshot.child(PHOTO_URL).getValue(String::class.java)
                 val interests = childSnapshot.child(INTERESTS).children.mapNotNull { it.key }
-
                 val age = currentYear - (year?.toIntOrNull() ?: currentYear)
 
                 val isNameSearch = name?.startsWith(search, ignoreCase = true) ?: false
@@ -125,7 +125,7 @@ class UsersProfileRepositoryImpl @Inject constructor(
         val snapshot = databaseRef.child(TAG_NAMES).child(tag).get().await()
 
         if (snapshot.exists()) {
-            val uid =  snapshot.getValue(String::class.java)
+            val uid = snapshot.getValue(String::class.java)
             uid?.let {
                 val snapshot = databaseRef.child(USERS).child(uid).get().await()
 

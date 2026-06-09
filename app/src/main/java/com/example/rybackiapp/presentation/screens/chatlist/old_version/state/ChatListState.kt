@@ -15,7 +15,7 @@ sealed class ChatListState {
 data class ChatPreview(
     val name: String = "Default",
     val imageUrl: String? = null,
-    val status: Boolean = false
+    val isOnline: Boolean = false
 )
 
 data class ChatUi(

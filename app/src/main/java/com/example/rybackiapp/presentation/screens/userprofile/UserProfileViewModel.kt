@@ -10,6 +10,7 @@ import com.example.rybackiapp.domain.usecase.GetUserProfilesUseCase
 import com.example.rybackiapp.domain.usecase.IsMutedChatUseCase
 import com.example.rybackiapp.domain.usecase.LoadInterestsUseCase
 import com.example.rybackiapp.domain.usecase.MuteChatUseCase
+import com.example.rybackiapp.domain.usecase.ObserveUserOnlineUseCase
 import com.example.rybackiapp.domain.usecase.UnmuteUseCase
 import com.example.rybackiapp.presentation.screens.userprofile.state.Profile
 import com.example.rybackiapp.presentation.screens.userprofile.state.UserProfileEvent
@@ -32,7 +33,8 @@ class UserProfileViewModel @Inject constructor(
     private val loadInterestsUseCase: LoadInterestsUseCase,
     private val isMutedChatUseCase: IsMutedChatUseCase,
     private val muteChatUseCase: MuteChatUseCase,
-    private val unmuteChatUseCase: UnmuteUseCase
+    private val unmuteChatUseCase: UnmuteUseCase,
+    private val observeUserOnlineUseCase: ObserveUserOnlineUseCase
 
 ) : ViewModel() {
 
@@ -54,10 +56,15 @@ class UserProfileViewModel @Inject constructor(
                             isMute = false
                         )
                     }
+                    observeUserOnlineUseCase(_state.value.profile.id).onEach {isOnline->
+                        _state.update {
+                            it.copy(isOnline = isOnline)
+                        }
+                    }.launchIn(viewModelScope)
+
 
                     isMutedChatUseCase(chatId)
                         .onEach { isMute ->
-                            Log.d("MUTE", "loadProfile: $isMute")
                             _state.update { currentState ->
                                 currentState.copy(isMute = isMute)
                             }

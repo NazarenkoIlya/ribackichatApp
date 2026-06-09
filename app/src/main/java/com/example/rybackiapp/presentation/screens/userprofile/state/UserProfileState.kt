@@ -20,6 +20,7 @@ data class Profile(
 data class UserProfileUiState(
     val state: UserProfileState = UserProfileState.Success,
     val profile: Profile = Profile(),
+    val isOnline: Boolean = false,
     val isMute: Boolean = false
 )
 

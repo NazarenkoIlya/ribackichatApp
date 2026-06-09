@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Card
@@ -51,6 +52,7 @@ fun MessageCard(
     messageTextSize: Int = 12,
     isEdit: Boolean? = null,
     userName: String = "Name",
+    isOnline: Boolean = false,
     date: String = "2000-07-08",
     time: String = "12:10",
     imageUrl: String? = null,
@@ -106,16 +108,19 @@ fun MessageCard(
                     fallback = painterResource(id = defaultImage)
                 )
 
-                Image(
-                    painter = painter,
-                    modifier = Modifier
-                        .background(Color.Blue, shape = RoundedCornerShape(18.dp))
-                        .size(50.dp)
-                        .clip(RoundedCornerShape(18.dp)),
-                    alignment = Alignment.TopCenter,
-                    contentDescription = "empty_userprofile_photo",
-                    contentScale = ContentScale.Crop
-                )
+                Box{
+                    Image(
+                        painter = painter,
+                        modifier = Modifier
+                            .background(Color.Blue, shape = RoundedCornerShape(18.dp))
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(18.dp)),
+                        alignment = Alignment.TopCenter,
+                        contentDescription = "empty_userprofile_photo",
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
 
 
                 Spacer(modifier = Modifier.width(15.dp))

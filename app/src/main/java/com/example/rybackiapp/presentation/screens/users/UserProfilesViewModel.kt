@@ -11,6 +11,7 @@ import com.example.rybackiapp.domain.usecase.GetFilterSaveUseCase
 import com.example.rybackiapp.domain.usecase.GetUserProfilesListUseCase
 import com.example.rybackiapp.domain.usecase.LoadInterestsUseCase
 import com.example.rybackiapp.domain.usecase.ObserveUserIdUseCase
+import com.example.rybackiapp.domain.usecase.ObserveUserOnlineUseCase
 import com.example.rybackiapp.domain.usecase.SaveFilterUseCase
 import com.example.rybackiapp.domain.usecase.SearchUserProfilesUseCase
 import com.example.rybackiapp.domain.usecase.SearchWithTagUserProfileUseCase
@@ -27,6 +28,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,12 +43,41 @@ class UserProfilesViewModel @Inject constructor(
     private val getFilterSaveUseCase: GetFilterSaveUseCase,
     private val saveFilterUseCase: SaveFilterUseCase,
     private val searchUserProfilesUseCase: SearchUserProfilesUseCase,
-    private val searchWithTagUserProfileUseCase: SearchWithTagUserProfileUseCase
+    private val searchWithTagUserProfileUseCase: SearchWithTagUserProfileUseCase,
+    private val observeUserOnlineUseCase: ObserveUserOnlineUseCase
 
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<UserProfilesUIState>(UserProfilesUIState())
     val state: StateFlow<UserProfilesUIState> = _state
+
+    init {
+        observeOnlineUser()
+    }
+
+    private fun observeOnlineUser() {
+
+        val currentProfiles = _state.value.profileList.profiles
+
+        currentProfiles.forEach { profile ->
+            observeUserOnlineUseCase(profile.id)
+                .onEach { isOnline ->
+                    _state.update { state ->
+                        val updatedProfiles = state.profileList.profiles.map { p ->
+                            if (p.id == profile.id) p.copy(isOnline = isOnline)
+                            else p
+                        }
+                        state.copy(
+                            profileList = state.profileList.copy(
+                                profiles = updatedProfiles
+                            )
+                        )
+                    }
+                }
+                .launchIn(viewModelScope)
+        }
+
+    }
 
     fun loadData() {
         viewModelScope.launch {
@@ -56,7 +88,6 @@ class UserProfilesViewModel @Inject constructor(
 
 
             val uid = observeUserIdUseCase.invoke().first()
-
 
             getUserProfilesListUseCase()
                 .onSuccess { profiles ->
@@ -69,6 +100,7 @@ class UserProfilesViewModel @Inject constructor(
                             filterUI = filter.toMapFilterUI()
                         )
                     }
+                    observeOnlineUser()
                 }
                 .onFailure { error ->
 

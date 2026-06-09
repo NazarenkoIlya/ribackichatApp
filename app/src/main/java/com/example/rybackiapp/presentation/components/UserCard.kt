@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -41,6 +43,7 @@ fun UserCard(
     userName: String = "Name",
     userYear: String = "2000",
     isYou: Boolean = true,
+    isOnline: Boolean = false,
     onNavigateToUserProfile: (String) -> Unit = {},
     onNavigateToChatDetail: (String) -> Unit = {},
     imageUrl: String? = null,
@@ -86,16 +89,29 @@ fun UserCard(
                 fallback = painterResource(id = defaultImage)
             )
 
-            Image(
-                painter = painter,
-                modifier = Modifier
-                    .background(Color.Blue, shape = RoundedCornerShape(18.dp))
-                    .fillMaxHeight()
-                    .weight(0.35f)
-                    .clip(RoundedCornerShape(18.dp)),
-                contentDescription = "empty_userprofile_photo",
-                contentScale = ContentScale.Crop
-            )
+            Box(modifier = Modifier.weight(0.35f)){
+                Image(
+                    painter = painter,
+                    modifier = Modifier
+                        .background(Color.Blue, shape = RoundedCornerShape(18.dp))
+                        .fillMaxHeight()
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(18.dp)),
+                    contentDescription = "empty_userprofile_photo",
+                    contentScale = ContentScale.Crop
+                )
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(1.dp)
+                        .size(16.dp)
+                        .background(
+                            color = if (isOnline) Color.Green else Color.Red,
+                            shape = CircleShape
+                        )
+                )
+            }
+
 
             Column(
                 modifier = Modifier

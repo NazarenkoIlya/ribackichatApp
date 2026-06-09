@@ -3,6 +3,7 @@ package com.example.rybackiapp.data.repository
 import android.util.Log
 import androidx.lifecycle.compose.LifecycleStartEffect
 import com.example.rybackiapp.data.mappers.toMap
+import com.example.rybackiapp.di.GlobalReference
 import com.example.rybackiapp.domain.model.Chat
 import com.example.rybackiapp.domain.model.Message
 import com.example.rybackiapp.domain.model.PrivateChat
@@ -26,7 +27,7 @@ import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
-    private val databaseRef: DatabaseReference
+    @GlobalReference private val databaseRef: DatabaseReference
 ) : ChatRepository {
 
     //region Первая версия создания чата
@@ -139,12 +140,6 @@ class ChatRepositoryImpl @Inject constructor(
 
         updates["$MESSAGES/$chatId/$messageId"] = messageData
 
-
-//        updateChatPreview(
-//            chatId = chatId,
-//            text = message.text,
-//            timestamp = message.timestamp
-//        )
         updates["$CHATS/${chatId}/$LAST_MESSAGE"] = message.text
         updates["$CHATS/${chatId}/$LAST_SENDER_ID"] = message.senderId
         updates["$CHATS/${chatId}/$LAST_TIMESTAMP"] = message.timestamp
@@ -217,19 +212,6 @@ class ChatRepositoryImpl @Inject constructor(
 
     override suspend fun deletePrivateChat(chatId: String) {
         deleteChat(chatId )
-//        val chatSnapshot = databaseRef.child(CHATS).child(chatId).get().await()
-//        val uids = chatSnapshot.child(PARTICIPANTS).children.mapNotNull { it.key }
-//        val updates = mutableMapOf<String, Any?>()
-//
-//        updates["$CHATS/$chatId"] = null
-//        updates["$CHAT_MEMBERS/$chatId"] = null
-//        updates["$MESSAGES/$chatId"] = null
-//
-//        uids.forEach { uid ->
-//            updates["$USER_CHATS/$uid/$chatId"] = null
-//        }
-//
-//        databaseRef.updateChildren(updates).await()
     }
 
     private fun updateChatPreview(chatId: String, senderId: String, text: String, timestamp: Long) {

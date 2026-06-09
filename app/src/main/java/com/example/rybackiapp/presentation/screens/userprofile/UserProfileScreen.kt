@@ -61,7 +61,7 @@ fun UserProfileScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadProfile(userId,chatId)
+        viewModel.loadProfile(userId, chatId)
     }
 
     Scaffold(
@@ -137,7 +137,8 @@ fun UserProfileView(
             ) {
 
                 ImageComponent(
-                    state.profile.mainPhotoUrl
+                    state.profile.mainPhotoUrl,
+                    isOnline = state.isOnline
                 )
                 Column(
                     modifier = Modifier

@@ -29,7 +29,7 @@ data class ChatPreview(
     val name: String = "Default",
     val imageUrl: String? = null,
     val imageDefault: Int = R.drawable.ic_user0,
-    val status: Boolean = false
+    val isOnline: Boolean = false
 )
 
 

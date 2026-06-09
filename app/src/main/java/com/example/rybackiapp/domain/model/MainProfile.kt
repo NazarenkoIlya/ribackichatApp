@@ -3,6 +3,7 @@ package com.example.rybackiapp.domain.model
 data class MainProfile(
     val id: String = "",
     val name: String? = null,
+    val isOnline: Boolean? = null,
     val email: String? = null,
     val year: String? = null,
     val tagName: String? = null,
@@ -14,6 +15,7 @@ data class MainProfile(
 data class UserProfile(
     val id: String = "",
     val name: String? = null,
+    val isOnline: Boolean? = null,
     val year: String? = null,
     val tagName: String? = null,
     val interests: List<Int>? = null,
@@ -28,5 +30,6 @@ data class UserProfileList(
 data class UserPreview(
     val uid: String = "",
     val name: String = "",
+    val isOnline: Boolean? = null,
     val mainPhotoUrl: String? = null,
 )

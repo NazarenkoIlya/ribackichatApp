@@ -8,7 +8,18 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ConnectedRef
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class GlobalReference
+
 
 
 @Module
@@ -33,8 +44,17 @@ object FirebaseModule {
         return FirebaseDatabase.getInstance()
     }
 
+
     @Provides
     @Singleton
+    @ConnectedRef
+    fun provideConnectedRef(database: FirebaseDatabase): DatabaseReference{
+        return database.getReference(".info/connected")
+    }
+
+    @Provides
+    @Singleton
+    @GlobalReference
     fun provideDatabaseReference(
         database: FirebaseDatabase
     ): DatabaseReference {

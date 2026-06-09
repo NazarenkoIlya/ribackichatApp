@@ -30,6 +30,7 @@ data class Profile(
     val id: String = "",
     val isYou: Boolean = false,
     val name: String? = null,
+    val isOnline: Boolean = false,
     val year: String? = null,
     val mainPhotoUrl: String? = null,
     val chatId: String = ""
@@ -43,7 +44,6 @@ data class ProfileList(
 data class FilterUI(
     val minAge: Float = 14f,
     val maxAge: Float = 100f,
-    //val ageRange: ClosedFloatingPointRange<Float> = 14f..100f,
     val desirableInterests: Set<Int> = emptySet(),
     val unwantedInterests: Set<Int> = emptySet()
 )

@@ -15,6 +15,7 @@ import com.example.rybackiapp.domain.usecase.ObserveChatDetailUseCase
 import com.example.rybackiapp.domain.usecase.ObserveFontSizeMassageUseCase
 import com.example.rybackiapp.domain.usecase.ObserveUserChatPreview
 import com.example.rybackiapp.domain.usecase.ObserveUserIdUseCase
+import com.example.rybackiapp.domain.usecase.ObserveUserOnlineUseCase
 import com.example.rybackiapp.domain.usecase.ObserveUserProfilePreview
 import com.example.rybackiapp.domain.usecase.PushNotificationUseCase
 import com.example.rybackiapp.domain.usecase.ResetUnreadCountUseCase
@@ -62,6 +63,7 @@ class PrivateChatDetailViewModel @Inject constructor(
     private val messageSender: MessageSender,
     private val editMessageUseCase: EditMessageUseCase,
     private val observeFontSizeMassageUseCase: ObserveFontSizeMassageUseCase,
+    private val observeUserOnlineUseCase: ObserveUserOnlineUseCase,
     private val pushNotificationUseCase: PushNotificationUseCase
 ) : ViewModel() {
 
@@ -172,11 +174,54 @@ class PrivateChatDetailViewModel @Inject constructor(
         }
     }
 
+//    @OptIn(ExperimentalCoroutinesApi::class)
+//    private fun observeChatDetail(chatId: String) {
+//
+//        viewModelScope.launch {
+//            combine(
+//                observeChatDetailUseCase.invoke(chatId),
+//                observeUserIdUseCase.invoke()
+//            ) { messages, userId ->
+//                messages to userId
+//            }.collect { (messages, userId) ->
+//
+//
+//                val textSize = observeFontSizeMassageUseCase().first()
+//                val preview =
+//                    observeUserChatPreview.invoke(
+//                        chatId.split("_")
+//                            .let { ids ->
+//                                if (ids.distinct().size == 1) ids.first()
+//                                else ids.first { it != userId }
+//                            }
+//                    ).first()
+//                observeUserOnlineUseCase(preview.uid).collect {
+//
+//                }
+//
+//                _state.update { it ->
+//                    it.copy(
+//                        chatId = chatId,
+//                        preview = preview.toMap(),
+//                        messages = messages.map {
+//                            val userPreview =
+//                                observeUserProfilePreview.invoke(it.senderId).first().toMap()
+//                            val message = it.toMap(userId)
+//                            MessageWithUserName(
+//                                userPreview = userPreview,
+//                                messageUI = message
+//                            )
+//                        },
+//                        textSize = TextSize(textSize)
+//                    )
+//                }
+//            }
+//        }
+//    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeChatDetail(chatId: String) {
-
         viewModelScope.launch {
-
             combine(
                 observeChatDetailUseCase.invoke(chatId),
                 observeUserIdUseCase.invoke()
@@ -185,31 +230,40 @@ class PrivateChatDetailViewModel @Inject constructor(
             }.collect { (messages, userId) ->
 
                 val textSize = observeFontSizeMassageUseCase().first()
-                val preview =
-                    observeUserChatPreview.invoke(
-                        chatId.split("_")
-                            .let { ids ->
-                                if (ids.distinct().size == 1) ids.first()
-                                else ids.first { it != userId }
-                            }
-                    ).first()
+                val otherUserId = chatId.split("_")
+                    .let { ids ->
+                        if (ids.distinct().size == 1) ids.first()
+                        else ids.first { it != userId }
+                    }
 
+                val preview = observeUserChatPreview.invoke(otherUserId).first()
 
-                _state.update {
+                val messagesWithUserNames = messages.map { message ->
+                    val userPreview = observeUserProfilePreview.invoke(message.senderId).first().toMap()
+                    val messageUi = message.toMap(userId)
+                    MessageWithUserName(
+                        userPreview = userPreview,
+                        messageUI = messageUi
+                    )
+                }
+
+                _state.update { it ->
                     it.copy(
                         chatId = chatId,
                         preview = preview.toMap(),
-                        messages = messages.map {
-                            val userPreview =
-                                observeUserProfilePreview.invoke(it.senderId).first().toMap()
-                            val message = it.toMap(userId)
-                            MessageWithUserName(
-                                userPreview = userPreview,
-                                messageUI = message
-                            )
-                        },
+                        messages = messagesWithUserNames,
                         textSize = TextSize(textSize)
                     )
+                }
+
+                launch {
+                    observeUserOnlineUseCase(otherUserId).collect { isOnline ->
+                        _state.update { state ->
+                            state.copy(
+                                preview = state.preview.copy(isOnline = isOnline)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -279,7 +333,7 @@ class PrivateChatDetailViewModel @Inject constructor(
         return ChatPreview(
             name = name,
             imageUrl = mainPhotoUrl,
-            status = status
+            isOnline = status
         )
     }
 

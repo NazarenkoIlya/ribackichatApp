@@ -2,6 +2,7 @@ package com.example.rybackiapp.data.repository
 
 import android.util.Log
 import com.example.rybackiapp.data.repository.ChatRepositoryImpl.Companion.PARTICIPANTS
+import com.example.rybackiapp.di.GlobalReference
 import com.example.rybackiapp.domain.model.InterestItem
 import com.example.rybackiapp.domain.model.MainProfile
 import com.example.rybackiapp.domain.model.UserPreview
@@ -24,7 +25,7 @@ import kotlin.math.log
 
 class ProfileRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
-    private val databaseRef: DatabaseReference
+    @GlobalReference private val databaseRef: DatabaseReference
 ) : ProfileRepository {
     override suspend fun getUserProfile(): Result<MainProfile> {
         return try {

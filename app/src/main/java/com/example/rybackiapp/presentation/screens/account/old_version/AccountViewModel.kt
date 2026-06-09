@@ -9,6 +9,7 @@ import com.example.rybackiapp.domain.usecase.EditMainImageUseCase
 import com.example.rybackiapp.domain.usecase.GetPublicImageUrlUseCase
 import com.example.rybackiapp.domain.usecase.GetUserProfileUseCase
 import com.example.rybackiapp.domain.usecase.LoadInterestsUseCase
+import com.example.rybackiapp.domain.usecase.ObserveUserOnlineUseCase
 import com.example.rybackiapp.domain.usecase.ObserveUserProfileUseCase
 import com.example.rybackiapp.domain.usecase.RemoveFcmTokenUseCase
 import com.example.rybackiapp.domain.usecase.SignOutUseCase
@@ -36,7 +37,8 @@ class AccountViewModel @Inject constructor(
     private val uriToFileConverter: UriToFileConverter,
     private val editMainImageUseCase: EditMainImageUseCase,
     private val observeUserProfileUseCase: ObserveUserProfileUseCase,
-    private val loadInterestsUseCase: LoadInterestsUseCase
+    private val loadInterestsUseCase: LoadInterestsUseCase,
+    private val observeUserOnlineUseCase: ObserveUserOnlineUseCase
 
 ) : ViewModel() {
     private val _state = MutableStateFlow<AccountUIState>(AccountUIState())
@@ -49,25 +51,15 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch {
             val interestsGroup = loadInterestsUseCase()
             observeUserProfileUseCase().collect {
-                _state.value = AccountUIState(
-                    accountProfile = it.toMap(interestsGroup)
-                )
+
+                observeUserOnlineUseCase(it.id).collect { isOnline ->
+                    _state.value = AccountUIState(
+                        accountProfile = it.toMap(interestsGroup),
+                        isOnline = isOnline
+                    )
+                }
+
             }
-//            getUserProfileUseCase()
-//                .onSuccess {
-//                    it?.let { profile ->
-//                        _state.value = AccountUIState(
-//
-//                            accountProfile = profile.toMap()
-//                        )
-//                    }
-//                }
-//                .onFailure {
-//                    Log.d("Account", "loadProfile: ${it.message}")
-//                    _state.value = AccountUIState(
-//                        accountState = Error(it.message ?: "Error")
-//                    )
-//                }
         }
     }
 

@@ -21,10 +21,11 @@ object AuthModule {
 
     @Provides
     @Singleton
+
     fun provideAuthRepository(
         firebaseAuth: FirebaseAuth,
         firebaseMessaging: FirebaseMessaging,
-        database: DatabaseReference
+        @GlobalReference database: DatabaseReference
     ): AuthRepository {
         return AuthRepositoryImpl(
             firebaseAuth,

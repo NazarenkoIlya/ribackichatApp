@@ -22,7 +22,7 @@ object UserProfilesModule {
     @Provides
     @Singleton
     fun provideUsersProfileRepository(
-        database: DatabaseReference
+        @GlobalReference database: DatabaseReference
     ): UsersProfileRepository {
         return UsersProfileRepositoryImpl(database)
     }

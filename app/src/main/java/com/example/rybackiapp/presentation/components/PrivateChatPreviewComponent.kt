@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -50,16 +51,29 @@ fun PrivateChatPreviewComponent(
                 fallback = painterResource(id = chatPreview.imageDefault) // Если ничего не работает
             )
 
-            Image(
-                painter = painter,
-                modifier = Modifier
-                    .background(Color.Blue, shape = RoundedCornerShape(18.dp))
-                    .size(50.dp)
-                    .clip(RoundedCornerShape(18.dp)),
-                alignment = Alignment.TopCenter,
-                contentDescription = "empty_userprofile_photo",
-                contentScale = ContentScale.Crop
-            )
+            Box{
+                Image(
+                    painter = painter,
+                    modifier = Modifier
+                        .background(Color.Blue, shape = RoundedCornerShape(18.dp))
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(18.dp)),
+                    alignment = Alignment.TopCenter,
+                    contentDescription = "empty_userprofile_photo",
+                    contentScale = ContentScale.Crop
+                )
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(1.dp)
+                        .size(16.dp)
+                        .background(
+                            color = if (chatPreview.isOnline) Color.Green else Color.Red,
+                            shape = CircleShape
+                        )
+                )
+            }
+
 
             Column(
                 modifier = Modifier
@@ -69,12 +83,7 @@ fun PrivateChatPreviewComponent(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(chatPreview.name, fontSize = 16.sp, fontStyle = FontStyle.Normal)
-                Text(
-                    when (chatPreview.status) {
-                        true -> "Online"
-                        false -> "Offline"
-                    }, fontSize = 12.sp
-                )
+
             }
         }
     }
